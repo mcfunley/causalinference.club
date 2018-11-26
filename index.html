@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Causal Inference for F̵u̵n̵ ̵a̵n̵d̵ Profit</title>
+        <link rel="stylesheet" href="presentation.css">
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, height=device-height, initial-scale=1" name="viewport">
+    </head>
+    <body>
+        <h3 class="club-index"><a href="http://dotclub.club">The .club Club</a></h3>
+
+        <header>
+            <h1>Causal Inference for <strike>Fun and</strike> Profit</h1>
+            <p>
+                I've been present as two relatively big product organizations have decided to start doing A/B tests. This is an idiosyncratic resume line item which has burdened me with many exhausting opinions. The fact that I have experienced this twice implies that I am either (un)lucky, or that many people could use my advice about how to accomplish this without triggering mass hysteria.
+            </p>
+            <p>
+                I'm not really attempting to sell you on the premise of measuring your product changes here. However if you're interested in those hot takes I have a few. You may want to peruse <a href="http://datadriven.club/">Data Driven Products Now!</a> and <a href="http://iterative.club/">Making Big Changes</a>.
+            </p>
+
+            <div class="share">
+                <a class="twitter-share-button" href="https://twitter.com/intent/tweet"
+                   data-via="mcfunley"
+                   data-size="large">
+                    Tweet
+                </a>
+
+                <a class="twitter-follow-button" href="https://twitter.com/mcfunley"
+                   data-show-count="false"
+                   data-size="large">
+                    Follow @mcfunley
+                </a>
+
+            </div>
+        </header>
+
+        <div class="presentation">
+            <table class="slides">
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.001.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="1"></a>
+
+                        <a href="#1">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.002.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="2"></a>
+                        So hey, I’m Dan McKinley
+                        <a href="#2">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.003.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="3"></a>
+                        I’m visiting you from California
+                        <a href="#3">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.004.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="4"></a>
+                        I’m a general purpose engineer. I’ve been in the industry for a while and have worked a bunch of places.
+                        <a href="#4">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.005.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="5"></a>
+                        Over the years I’ve accumulated a concentration in data and experimentation stuff. And that’s what I wanted to talk about today. Specifically, doing quant measurement of product changes.
+                        <a href="#5">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.006.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="6"></a>
+                        I helped build out that capability at Etsy starting in about 2010, until 2014. I wrote a bunch of talks and blog posts about this when I was doing it for the first time.
+                        <a href="#6">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.007.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="7"></a>
+                        Quantitative measurement sounded more straightforward at first than it turned out to be. It turned out to be a complicated endeavor. There are many reasons that measuring what product changes do is not easy.
+                        <a href="#7">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.008.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="8"></a>
+                        And this is a thing I’m now doing for a second time. And I thought it was worth writing down my thoughts on how to make the transition to doing quantitative things happen relatively smoothly.<br /><br />
+                        <a href="#8">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.009.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="9"></a>
+                        Right now I’m working at Mailchimp, which is a marketing platform for small businesses. <br /><br />Although Mailchimp sells A/B testing as part of the product, Mailchimp itself hit about 800 people before running any experiments of its own. I don’t think this was a bad idea. Maybe 800 is pushing it a bit, but overall I think that decision-making was informed and pragmatic. Experiments are hard and not automatically a good idea in all contexts.<br /><br />I think that might be a pretty common scenario. There are probably more than a few large successful businesses that have never tried to measure their releases quantitatively. <br /><br />So if you find yourself in a similar situation, I’ve got some thoughts on how to proceed. Spoiler: once there are hundreds of people involved, everything is really a people problem. <br />
+                        <a href="#9">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.010.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="10"></a>
+                        I guess first I should back up and make sure everyone understands what I’m talking about.
+                        <a href="#10">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.011.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="11"></a>
+                        The idea with A/B experiments is that instead of having all users see the same experience in your app, or when they visit your website…
+                        <a href="#11">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.012.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="12"></a>
+                        We’ll instead roll a die and show users different things.
+                        <a href="#12">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.013.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="13"></a>
+                        The introduction of randomness is magic, because that plus large numbers lets us control for all of the variation in what users do and isolate just the effect of the difference in our designs. <br />
+                        <a href="#13">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.014.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="14"></a>
+                        So then we can track success metrics separately for every variation that we show.
+                        <a href="#14">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.015.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="15"></a>
+                        And then we can see how the different designs perform comparatively, using statistics.
+                        <a href="#15">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.016.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="16"></a>
+                        And then it’s at this point that, in my experience, mass hysteria and chaos ensue.
+                        <a href="#16">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.017.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="17"></a>
+                        There are at least a couple of reasons for this.
+                        <a href="#17">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.018.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="18"></a>
+                        First of all, in practice, it’s pretty hard to execute any of those steps flawlessly.
+                        <a href="#18">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.019.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="19"></a>
+                        And second, the entire premise here is that we’ll build things and then maybe not ship them. And that is a big deal.
+                        <a href="#19">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.020.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="20"></a>
+                        It’s very different from the way you’ve built stuff before. Up until now, you built things and you launched them. And then you moved forward with feelings of accomplishment. <br /><br />It’s much tougher technically to do experiments, and it’s also much tougher emotionally. Which is probably one reason why it’s so common for companies to wait such a long time before even trying it. This is not entirely unreasonable.
+                        <a href="#20">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.021.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="21"></a>
+                        If you do want to try it, I’ve identified at least a few things that you should worry about.
+                        <a href="#21">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.022.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="22"></a>
+                        Correctness. Doing experiments correctly is hard along several dimensions, I’ll talk about some of these.
+                        <a href="#22">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.023.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="23"></a>
+                        Second: effectiveness. It’s possible to do experiments correctly, but for no particular reason. <br /><br />It’s more than possible, actually. If you don’t try to actively avoid it, you’ll definitely run a lot of pointless experiments and just make everyone mad.
+                        <a href="#23">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.024.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="24"></a>
+                        And making everyone mad would be a problem, because adoption is a thing you should worry about. Teams can reject the practice of running experiments, or just never try at all. <br /><br />If you are the CEO of the company and can tell everyone what to do maybe you can ignore this. Otherwise it’s important to get people on your side. And it’s not like it’s bad for people to be on your side if you’re the CEO.
+                        <a href="#24">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.025.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="25"></a>
+                        Ok so for the first problem, correctness, the biggest single thing you can do is not build your own A/B testing platform.<br />
+                        <a href="#25">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.026.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="26"></a>
+                        Incidentally, I am a person who has helped build an A/B testing platform. This is a screenshot from Catapult, Etsy’s proprietary A/B testing platform. You should forgive me for being a part of this because it was 2010, and there was no better alternative at the time.<br /><br />That’s no longer true, and at least until you really know what you’re doing, it’d be a bad idea to build your own thing now. <br /><br />I should know, I singed my eyebrows off many times while our solution was coming together.
+                        <a href="#26">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.027.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="27"></a>
+                        Look. Confidence is a good thing. You want an engineering team that isn’t afraid of building stuff.
+                        <a href="#27">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.028.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="28"></a>
+                        But excess confidence pointed in the wrong direction is your mortal enemy. I say this as a frequently excessively-confident engineer. <br />
+                        <a href="#28">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.029.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="29"></a>
+                        There are a bunch of things that are hard when it comes to running product experiments. Here are a couple of them.
+                        <a href="#29">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.030.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="30"></a>
+                        Counting things.
+                        <a href="#30">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.031.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="31"></a>
+                        If you have too many things to count or you have to do it really quickly, even just counting things accurately is hell.
+                        <a href="#31">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.032.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="32"></a>
+                        Bucketing. How you decide who sees what. This is a fun little problem. That makes it dangerous, and it’s good to offload it onto someone else.
+                        <a href="#32">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.033.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="33"></a>
+                        Finally: the specific choices you make about how experiments will be measured and evaluated. I’ll call this your stats model.
+                        <a href="#33">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.034.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="34"></a>
+                        This is the hardest one—and the one you’re probably going to have the least expertise in. There’s more to this than just doing t-tests.<br /><br />Nothing eliminates this as a booby trap. But there are vendors out there that do a pretty reasonable job getting you started.<br /><br />You’ll still have problems, but you’re much better off with someone else’s starting point than winging it. <br />
+                        <a href="#34">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.035.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="35"></a>
+                        So you should buy a vendor’s experimentation platform now. But that’s not to say that every product from every vendor is good, because they’re not. <br /><br />One category of product you can buy is javascript trackers that mutate the DOM of webpages as they load, on the frontend. One thing I have decided firmly is that this entire category of product is bad. They’re bad for engineering reasons, and they introduce bias which is bad for analysis reasons.
+
+                        <br /><br/> I don’t really have time to dig into this one but I’d urge you to measure the rate at which people block your experiments if you insist on trying this.
+                        <a href="#35">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.036.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="36"></a>
+                        The good news is that you can buy perfectly good backend testing products, and you don’t need to use js testing.<br /><br />The additional bad news is that you still have to wear your critical thinking hat when interacting with A/B testing products.<br /><br />Vendors have an incentive to keep you using their products, and this introduces moral hazard.
+                        <a href="#36">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.037.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="37"></a>
+                        Products can be fine in theory, but come with messed up factory settings. You have to review all of this. <br /><br />A low setting for determining statistical significance would nudge you towards believing that experiments are more effective than they are in reality.
+                        <a href="#37">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.038.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="38"></a>
+                        Vendors obviously want you to use their stuff, and I think you should. But be careful about product design choices that push you to run a lot of experiments.<br /><br />I think you have to focus on effective tests, not a lot of tests. I’ll talk more about this in a second. <br />
+                        <a href="#38">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.039.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="39"></a>
+                        It’s like Lenin said, you look to the person who will benefit, and uh, you know
+                        <a href="#39">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.040.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="40"></a>
+                        Ok, so you’re set up. Now what?<br /><br />What tests should you do? How many? Where? I think you should start slowly.
+                        <a href="#40">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.041.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="41"></a>
+                        Again, one theory is flood the zone and run a ton of tests when you’re getting started. The thinking there is that you don’t really know where an effective place is to run tests. And that’s true, you probably don’t.<br />
+                        <a href="#41">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.042.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="42"></a>
+                        On average, these tests are unlikely to do anything. But you might get lucky. It’s not a dumb theory, but I think it’s misguided.<br /><br />I submit that experiments that are unlikely to detect change or are likely to be make incorrect conclusions are worse than not running experiments.
+                        <a href="#42">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.043.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="43"></a>
+                        Let me explain why. So it’s true that when you’re first getting started running experiments, you probably don’t have great information about where on your website or in your app that you should run them.
+                        <a href="#43">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.044.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="44"></a>
+                        But that’s not your biggest problem, so there’s no particular reason it should determine our behavior.
+                        <a href="#44">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.045.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="45"></a>
+                        The other part of this premise is that running a lot of experiments is a way to explore, and it is.
+                        <a href="#45">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.046.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="46"></a>
+                        But it’s not really the cheapest or best way to explore.
+                        <a href="#46">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.047.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="47"></a>
+                        The biggest problem you have when you’re first running experiments is just executing them correctly. Your biggest problem is subtle mistakes in code that looks correct, but is in fact wrong in a way that honks up the measurement. And that’ll only be obvious after burning days or weeks, when you look at the data and realize it’s wonky as hell.<br /><br />You need to build up the capability to catch this stuff over time. And that capacity is a broad base of engineers and analysts with experience. People who know what to look for and where to apply paranoia. You don’t come out of the gate with that.<br />
+                        <a href="#47">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.048.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="48"></a>
+                        So scaling up writing the code correctly is a real challenge.
+                        <a href="#48">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.049.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="49"></a>
+                        Stats thinking is the same, but even worse. There are a bunch of ways to get in the weeds evaluating an experiment, and you have to worry about false positive results and false negative results at the same time.
+                        <a href="#49">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.050.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="50"></a>
+                        It’s important to understand that the odds that an experiment is a weird shitshow is not coupled to the experiment’s odds of detecting an effect.<br /><br />Embarking upon wild goose chases while running what are fundamentally experiments with slim chances of success wastes time, and that impugns your credibility.
+                        <a href="#50">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.051.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="51"></a>
+                        Correctness—even when using a vendor—is probably the biggest problem when you’re getting going and training people.<br /><br />If we’re not going to just randomly try experiments when we start, we need a better way to pick experiments to run.
+                        <a href="#51">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.052.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="52"></a>
+                        This has been the premise up until now; we come up with an idea, we build it, we run an experiment and then we either ship it or throw it out.
+                        <a href="#52">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.053.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="53"></a>
+                        The problem with this is that building stuff takes more time than not building stuff, and experiments can be weird shitshows.
+                        <a href="#53">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.054.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="54"></a>
+                        Doing something like this is much better.<br />
+                        <a href="#54">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.055.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="55"></a>
+                        The idea is that you do some math, which is cheap, before you sit down and write any code. And before you waste time analyzing and maybe debugging a broken experiment. <br />
+                        <a href="#55">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.056.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="56"></a>
+                        The most basic thing you can do here is something shaped like a sample size estimate. Figure out how long you’d have to run the experiment to notice an effect of reasonable size. <br /><br />You can do fancier modeling than this, but this is a good start.
+                        <a href="#56">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.057.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="57"></a>
+                        Once you build up some competence in these kinds of things organizationally, you can scale up experiments. But you should probably wait a while before doing this.
+                        <a href="#57">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.058.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="58"></a>
+                        Because building up organizational competence means changing the way you build things.
+                        <a href="#58">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.059.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="59"></a>
+                        And like I said, we’re introducing the possibility that we’ll throw away work, and that’s a big deal for a lot of people.
+                        <a href="#59">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.060.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="60"></a>
+                        There are implications for the way you write code. Let’s say you have a perfectly normal class that you use like this
+                        <a href="#60">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.061.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="61"></a>
+                        The right thing to do in the context of an experiment could be just cut and paste what you have and then modify it. <br /><br />Every good engineer is going to die a little inside when doing this. And they’ll resist it, until they eventually achieve enlightenment and understand why it is good.
+                        <a href="#61">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.062.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="62"></a>
+                        The reason it’s good is because it’s expected that we’re gonna throw a lot of stuff out, and we should be optimizing with that eventuality in mind. <br /><br />We need to change engineer sensibilities here.
+                        <a href="#62">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.063.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="63"></a>
+                        We want to optimize for experiments that don’t ship because many or most won’t ship. At least not if we’re doing our jobs right.
+                        <a href="#63">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.064.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="64"></a>
+                        In order to not just create an unworkable mess over time though you need to create space to clean up AFTER code is known to be worth having.<br /><br />But good engineers are also not automatically going to believe that they’ll actually have this time, just because you say they will. It takes time and therapy to earn this kind of trust.
+                        <a href="#64">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.065.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="65"></a>
+                        Experiments mean doing smaller things, which means you’re working on shorter schedules. If you have product process scaled appropriately to long schedules …
+                        <a href="#65">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.066.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="66"></a>
+                        and you keep the existing process but just shorten the timeframe …
+                        <a href="#66">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.067.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="67"></a>
+                        … you’ll probably find that the result is that the process time is dominating the building time, and you need to fix this.
+                        <a href="#67">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.068.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="68"></a>
+                        You also want to invest a lot less in designs that might not ship, but that can get pretty tricky. Because if you put crappy design out there, it’ll tend to fail because it’s crappy.
+                        <a href="#68">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.069.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="69"></a>
+                        One way you can make this quicker is to just avoid handling edge cases. You can make design a lot quicker the more details you can keep out of scope, when you’re first trying something out.<br />
+                        <a href="#69">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.070.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="70"></a>
+                        Obviously, changing all of this is gonna take some time, and you need to do it one project at a time. And you need to get data analysts with stats backgrounds into the process. Which may involve hiring them, if you don’t have them already.
+                        <a href="#70">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.071.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="71"></a>
+                        What tends to be tractable, I think, is just trying to build out a single team doing experiments first. Once that’s working those folks can train the others.
+                        <a href="#71">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.072.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="72"></a>
+                        While you’re trying to get development people on board, you should also be trying not to freak ops people out. You want to make experiments easily observable and discoverable.
+                        <a href="#72">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.073.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="73"></a>
+                        You should also make changes to experiments as visible as you possibly can.<br /><br />If the list of running experiments is a mystery, or when changes happen is a mystery, people are going to tend to react to any problem by thinking it’s experiments. This is a natural tendency with any new thing in the mix, and as a debugging heuristic it’s not a bad one.<br /><br />But they might errantly turn experiments off in an emergency, which would be bad.
+                        <a href="#73">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.074.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="74"></a>
+                        So let me leave you with a couple of things.
+                        <a href="#74">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.075.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="75"></a>
+                        If you find yourself working at a successful company that’s never done quantitative measurement, I think it’s a really good idea to try to start. There’s no particular reason to think that what has always worked for that company will work indefinitely, because external conditions change all the time.
+                        <a href="#75">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.076.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="76"></a>
+                        Tooling that you can buy these days is much better, and you should almost definitely buy it. At least to start. But experimentation is irreducibly complex in a number of ways.
+                        <a href="#76">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.077.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="77"></a>
+                        Focus on the thing that’s actually hard with experiments, which is the process.<br /><br />People will be excited about experiments, and that’s good. You need to point them at the correct shiny object. The correct shiny object is a complicated system of human beings, not a complicated distributed system.
+                        <a href="#77">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.078.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="78"></a>
+                        Running low-powered experiments is manifestly worse than not running experiments.
+                        <a href="#78">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.079.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="79"></a>
+                        And a big part of the reason why is that you really want to be able to apply experimentation where it matters. And in order to effect that, you need to accumulate social capital. You need to worry about how experimentation is perceived. <br /><br />It’s no good to be unable to run signup experiments because you already caused a wild hoop-de-doo somewhere less important.
+                        <a href="#79">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.080.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="80"></a>
+                        It’d be really great to do experiments without having designers quitting and shitposting you in public. Don’t be these engineers.
+                        <a href="#80">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.081.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="81"></a>
+                        You can make data driven work attractive by showing how well it works when applied appropriately. It’s also important to avoid wasting people’s time.
+                        <a href="#81">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.082.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="82"></a>
+                        You don’t get unlimited chances to change your process.
+                        <a href="#82">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.083.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="83"></a>
+                        So the appropriate posture is one of humility—frame data work as a discipline the company is working to get a handle on together. Don’t frame it as something you’re teaching.  <br /><br />Details specific to your company are going to be incredibly important, and path dependency means no two journeys are going to be the same.
+                        <a href="#83">#</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="slide">
+                        <img src="slides/slides.084.jpeg" />
+                    </td>
+                    <td class="note">
+                        <a name="84"></a>
+                        fin
+                        <a href="#84">#</a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <footer>
+            <div class="share">
+                <a class="twitter-share-button" href="https://twitter.com/intent/tweet"
+                   data-via="mcfunley"
+                   data-size="large">
+                    Tweet
+                </a>
+
+                <a class="twitter-follow-button" href="https://twitter.com/mcfunley"
+                   data-show-count="false"
+                   data-size="large">
+                    Follow @mcfunley
+                </a>
+
+            </div>
+
+            <p><a class="club-index" href="http://dotclub.club">Check out my other clubs</a></p>
+            <p>
+                Generated with
+                <a href="https://github.com/mcfunley/better-keynote-export">
+                    better-keynote-export</a>.
+            </p>
+        </footer>
+
+        <script>
+            window.twttr = (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+                if (d.getElementById(id)) return t;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+
+                t._e = [];
+                t.ready = function(f) {
+                    t._e.push(f);
+                };
+
+                return t;
+            }(document, "script", "twitter-wjs"));
+        </script>
+    </body>
+</html>
